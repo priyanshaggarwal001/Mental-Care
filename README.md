@@ -446,7 +446,7 @@ Profile settings are accessible from the **top-right user dropdown**.
 
 <div align="center">
 
-Made with ❤️ for mental wellness · SIH 2024
+Made with ❤️ for mental wellness 
 
 </div>
 
