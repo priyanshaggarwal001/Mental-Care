@@ -29,12 +29,13 @@
    - [AI Chat Backend Setup](#3-ai-chat-backend-setup)
 7. [🗺️ Navigation & Tool Routing](#️-navigation--tool-routing)
 8. [👤 User Profile & Settings](#-user-profile--settings)
-9. [🗄️ localStorage Reference](#️-localstorage-reference)
-10. [🧪 Available Scripts](#-available-scripts)
-11. [🔧 Troubleshooting](#-troubleshooting)
-12. [🔒 Security Notes](#-security-notes)
-13. [⚠️ Disclaimer](#️-disclaimer)
-14. [👥 Contributors](#-contributors)
+9. [🔔 Notification System](#-notification-system)
+10. [🗄️ localStorage Reference](#️-localstorage-reference)
+11. [🧪 Available Scripts](#-available-scripts)
+12. [🔧 Troubleshooting](#-troubleshooting)
+13. [🔒 Security Notes](#-security-notes)
+14. [⚠️ Disclaimer](#️-disclaimer)
+15. [👥 Contributors](#-contributors)
 
 ---
 
@@ -88,6 +89,14 @@ Both modules score responses, display severity ratings, and provide guidance bas
 - **Firebase email/password** — when Firebase env vars are set
 - **Google Sign-In** — when Firebase is configured
 - Login-first gating: unauthenticated users are always redirected to the Auth page
+
+### 🔔 Notification System
+- **Toast notifications** — floating in-app messages (success, error, info, warning) with auto-close or persistent mode
+- **Browser push notifications** — appear even when the tab is not in focus (requires user permission)
+- **Notification history** — all notifications persisted in `localStorage` (up to 50 most recent)
+- Pre-built helpers: `notifyBookingComplete`, `notifyActivityComplete`, `notifySuccess`, `notifyError`
+- Automatically triggered on booking confirmation and activity completion
+- See [`NOTIFICATIONS.md`](NOTIFICATIONS.md) for the full API reference, usage examples, and customization guide
 
 ### 🎨 UX Extras
 - 🌙 **Dark mode** toggle (persisted across sessions)
@@ -152,8 +161,11 @@ Mental-Care/
 │
 ├── firebaseAuth.js         # Firebase auth helpers
 ├── wellnessStats.js        # LocalStorage stats utilities
+├── notificationService.js  # Toast & browser push notification helpers
 ├── counselors.csv          # Counselor data
 ├── server.js               # (Dev) static file server
+│
+├── NOTIFICATIONS.md        # Notification system API reference & guide
 │
 ├── mental/                 # Python AI backend
 │   ├── chat_server.py      # FastAPI chat endpoint
@@ -334,6 +346,64 @@ Profile settings are accessible from the **top-right user dropdown**.
 
 ---
 
+## 🔔 Notification System
+
+MindCare includes a built-in notification system (`notificationService.js`) for real-time user feedback and engagement. It supports three layers of notifications:
+
+| Type | Description |
+|------|-------------|
+| **Toast Notifications** | Floating in-app banners (top-right) with configurable duration |
+| **Browser Push Notifications** | Native OS-level alerts, visible even when the tab is unfocused |
+| **Notification History** | Persisted pool of up to 50 recent notifications in `localStorage` |
+
+### Quick Usage
+
+```javascript
+import {
+  showToast,
+  notifyBookingComplete,
+  notifyActivityComplete,
+  notifySuccess,
+  notifyError,
+  getNotificationHistory,
+  clearNotificationHistory,
+} from './notificationService';
+
+// Show a toast
+showToast('Profile saved!', 'success', 4000);
+
+// Booking confirmation (toast + push + history)
+notifyBookingComplete({ counselorName: 'Dr. Sarah', amount: 499, bookingId: 'BK1', transactionId: 'TX1' });
+
+// Activity completion (toast + push + history)
+notifyActivityComplete('Deep Breathing Exercise');
+
+// Retrieve stored history
+const history = getNotificationHistory();
+```
+
+**Toast types:** `'success'` | `'error'` | `'info'` | `'warning'`  
+**Duration:** milliseconds — pass `0` for a persistent (non-closing) toast.
+
+### Where It's Already Integrated
+
+- ✅ **Booking Completion** (`ConsultingPage.jsx`)
+- ✅ **Activity Completion** (`ActivityPage.jsx`)
+
+### Browser Support
+
+| Browser | Toast | Push |
+|---------|-------|------|
+| Chrome | ✅ | ✅ |
+| Firefox | ✅ | ✅ |
+| Safari (macOS) | ✅ | ⚠️ |
+| Edge | ✅ | ✅ |
+| Safari (iOS) | ✅ | ❌ |
+
+> For the full API reference, customization guide, and more usage examples, see [`NOTIFICATIONS.md`](NOTIFICATIONS.md).
+
+---
+
 ## 🗄️ localStorage Reference
 
 | Key | Purpose |
@@ -345,6 +415,7 @@ Profile settings are accessible from the **top-right user dropdown**.
 | `wellness_theme_dark` | Boolean — dark mode preference |
 | `wellness_music_enabled` | Boolean — ambient music preference |
 | `wellness_stats_v1` | Object — usage statistics for Progress Dashboard |
+| `wellness_notifications` | Array — up to 50 most recent notification records (booking, activity, etc.) |
 
 ---
 
