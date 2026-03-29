@@ -1,0 +1,66 @@
+.wellness-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  background: linear-gradient(to bottom, #e0f7fa, #f0f8ff);
+}
+
+.wellness-card {
+  width: 100%;
+  max-width: 860px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+  text-align: center;
+}
+
+.wellness-title {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  color: #0f172a;
+}
+
+.wellness-subtitle {
+  margin-bottom: 1rem;
+  color: #334155;
+}
+
+.wellness-btn {
+  width: auto;
+  min-width: 120px;
+  border: none;
+  border-radius: 12px;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  background: linear-gradient(90deg, #4cafef, #2196f3);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.wellness-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(0.95);
+}
+
+.wellness-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+@media (max-width: 600px) {
+  .wellness-title {
+    font-size: 1.7rem;
+  }
+
+  .wellness-btn {
+    min-width: 100px;
+    font-size: 0.95rem;
+  }
+}

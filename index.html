@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Page - Mental Health & Wellness Platform</title>
+    <script>
+        (function() {
+            const authSession = localStorage.getItem('wellness_auth_session');
+            if (authSession !== 'true') {
+                const authPath = '/index%20(1).html?tool=AUTH&redirect=%2F';
+                window.location.replace(authPath);
+            }
+        })();
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== Header/Navigation ===== */
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logo-icon {
+            width: 35px;
+            height: 35px;
+            background: #27ae60;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #27ae60;
+        }
+
+        .cta-button {
+            background: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .cta-button:hover {
+            background: #219a52;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+
+        .user-tab-btn {
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border-radius: 999px;
+            padding: 8px 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .user-tab-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #f59e0b;
+            color: #0f172a;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: calc(100% + 10px);
+            width: 220px;
+            background: #fff;
+            border: 1px solid #dbeafe;
+            border-radius: 10px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            z-index: 2001;
+        }
+
+        .user-dropdown.show {
+            display: block;
+        }
+
+        .user-dropdown .meta {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #0f172a;
+        }
+
+        .user-dropdown .meta small {
+            color: #64748b;
+            display: block;
+            margin-top: 3px;
+        }
+
+        .user-dropdown button {
+            width: 100%;
+            margin: 0;
+            display: block;
+            border: none;
+            border-top: 1px solid #f1f5f9;
+            text-align: left;
+            padding: 10px 12px;
+            background: #fff;
+            color: #334155;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .user-dropdown button:hover {
+            background: #f8fafc;
+        }
+
+        .user-dropdown button.danger {
+            color: #b91c1c;
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.9), rgba(155, 89, 182, 0.9)), url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 80px 0;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .search-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .search-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .search-tab.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .search-form input, .search-form select {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .search-button {
+            background: #27ae60;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* ===== Wellness Journey Section ===== */
+        .wellness-journey {
+            padding: 80px 0;
+            background: white;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .section-subtitle {
+            color: #666;
+            margin-bottom: 50px;
+            font-size: 1.1rem;
+        }
+
+        .journey-steps {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .step {
+            text-align: center;
+            max-width: 200px;
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+        }
+
+        .step h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .consult-now {
+            background: #3498db;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .consult-now:hover {
+            background: #2980b9;
+        }
+
+        /* ===== Who's Covered Section ===== */
+        .whos-covered {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background: #3498db;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background: inherit;
+            width: 50%;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background: #3498db;
+            border-radius: 50%;
+            top: 15px;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-item:nth-child(even)::after {
+            left: -10px;
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* ===== Shop Section ===== */
+        .shop-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .shop-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .shop-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .shop-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .shop-item-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .shop-item h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .shop-item p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* ===== Wellness Programs ===== */
+        .wellness-programs {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .program-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .program-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            background: #3498db;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .program-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .program-card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .program-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* ===== Feedback Section ===== */
+        .feedback-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .feedback-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .feedback-image {
+            flex-shrink: 0;
+        }
+
+        .feedback-image img {
+            width: 300px;
+            height: 300px;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+
+        .feedback-content {
+            flex: 1;
+        }
+
+        .feedback-text {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .feedback-author {
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 5px;
+        }
+
+        .feedback-role {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .feedback-nav {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .feedback-nav button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #3498db;
+            background: none;
+            color: #3498db;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .feedback-nav button:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        /* ===== Team Section ===== */
+        .team-section {
+            padding: 10px 0;
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+        }
+
+        .team-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .team-stat {
+            text-align: center;
+        }
+
+        .team-stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+
+        .team-stat-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* ===== Responsive Design ===== */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .journey-steps {
+                flex-direction: column;
+            }
+
+            .timeline::before {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-item::after {
+                left: 21px;
+            }
+
+            .timeline-item:nth-child(even) {
+                left: 0%;
+            }
+
+            .feedback-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .feedback-image img {
+                width: 250px;
+                height: 250px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+        }
+
+        /* ===== Floating Chatbot ===== */
+        .chat-launcher {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 58px;
+            height: 58px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #27ae60, #3498db);
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+            z-index: 2000;
+        }
+
+        .chat-panel {
+            position: fixed;
+            right: 20px;
+            bottom: 90px;
+            width: min(360px, calc(100vw - 24px));
+            height: 520px;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.24);
+            overflow: hidden;
+            z-index: 2000;
+            display: none;
+        }
+
+        .chat-panel.show {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background: #2c3e50;
+            color: white;
+            padding: 0.8rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 600;
+        }
+
+        .chat-header button {
+            width: auto;
+            margin: 0;
+            display: inline-block;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            padding: 0;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 0.9rem;
+            background: #f8fbff;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .chat-msg {
+            max-width: 86%;
+            padding: 0.65rem 0.75rem;
+            border-radius: 10px;
+            line-height: 1.5;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+        }
+
+        .chat-msg.bot {
+            align-self: flex-start;
+            background: #eaf3ff;
+            border: 1px solid #d0e5ff;
+            color: #1e3a5f;
+        }
+
+        .chat-msg.user {
+            align-self: flex-end;
+            background: #3498db;
+            color: #ffffff;
+        }
+
+        .chat-input-row {
+            padding: 0.75rem;
+            border-top: 1px solid #e2e8f0;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 0.55rem;
+            background: #fff;
+        }
+
+        .chat-input-row input {
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            padding: 0.65rem 0.7rem;
+            font-size: 0.9rem;
+        }
+
+        .chat-send {
+            width: auto;
+            margin: 0;
+            display: inline-block;
+            padding: 0.6rem 0.9rem;
+            border: none;
+            border-radius: 9px;
+            background: #27ae60;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .chat-send:hover {
+            background: #219a52;
+        }
+
+        body.dark-theme {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+
+        body.dark-theme .header,
+        body.dark-theme .team-section {
+            background: #111827;
+        }
+
+        body.dark-theme .wellness-journey,
+        body.dark-theme .shop-section,
+        body.dark-theme .feedback-section {
+            background: #111827;
+        }
+
+        body.dark-theme .whos-covered,
+        body.dark-theme .wellness-programs {
+            background: #0b1220;
+        }
+
+        body.dark-theme .search-container,
+        body.dark-theme .timeline-content,
+        body.dark-theme .shop-item,
+        body.dark-theme .program-card,
+        body.dark-theme .user-dropdown {
+            background: #111827;
+            border-color: #334155;
+            color: #e2e8f0;
+        }
+
+        body.dark-theme .section-title,
+        body.dark-theme .step h3,
+        body.dark-theme .shop-item h3,
+        body.dark-theme .program-card h3,
+        body.dark-theme .feedback-text,
+        body.dark-theme .meta {
+            color: #e2e8f0;
+        }
+
+        body.dark-theme .section-subtitle,
+        body.dark-theme .step p,
+        body.dark-theme .shop-item p,
+        body.dark-theme .program-card p,
+        body.dark-theme .feedback-role,
+        body.dark-theme .meta small,
+        body.dark-theme .total-row,
+        body.dark-theme .search-tab {
+            color: #cbd5e1;
+        }
+
+        body.dark-theme .search-tabs {
+            background: #1f2937;
+        }
+
+        body.dark-theme .search-tab.active {
+            background: #3498db;
+            color: #fff;
+        }
+
+        body.dark-theme .user-dropdown button {
+            background: #111827;
+            color: #e2e8f0;
+            border-color: #1f2937;
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== Header ===== -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">
+                    <div class="logo-icon">+</div>
+                    Health Page
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button class="cta-button" id="authBtn" style="background:#8e44ad;">Login / Sign Up</button>
+                    <button class="cta-button" id="musicToggleBtn" style="background:#3498db;">Play Music</button>
+                    <button class="cta-button" id="consultOnlineBtn">Consult Online</button>
+                    <button class="user-tab-btn" id="userTabBtn" aria-label="Open user menu">
+                        <span class="user-tab-avatar" id="userTabAvatar">U</span>
+                        <span id="userTabName">User</span>
+                    </button>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="meta">
+                            <strong id="userDropdownName">User</strong>
+                            <small id="userDropdownEmail">No email</small>
+                        </div>
+                        <button type="button" id="profileSettingsBtn">Profile Settings</button>
+                        <button type="button" id="themeToggleBtn">Enable Dark Mode</button>
+                        <button type="button" class="danger" id="logoutBtn">Logout</button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== Hero Section ===== -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Your Mental Wellness Journey Starts Here</h1>
+                <p>Professional healthcare services designed to support your mental and physical well-being</p>
+                
+                <div class="search-container">
+                    <div class="search-tabs">
+                        <button class="search-tab" data-action="auth">Login / Sign Up</button>
+                        <button class="search-tab active" data-action="screening">Screening</button>
+                        <button class="search-tab" data-action="mood_game">Mood Game</button>
+                        <button class="search-tab" data-action="consult">Consult</button>
+                        <button class="search-tab" data-action="activities">Activities</button>
+                        <button class="search-tab" data-action="progress">Progress</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Wellness Journey ===== -->
+    <section class="wellness-journey" id="services">
+        <div class="container">
+            <h2 class="section-title">Your Mental Wellness Journey Starts Here</h2>
+            <p class="section-subtitle">Brief, empathetic description of the platform's purpose for students</p>
+            
+            <div class="journey-steps">
+                <div class="step">
+                    <div class="step-icon">1</div>
+                    <h3>Assessment</h3>
+                    <p>Complete our confidential mental health screening</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">2</div>
+                    <h3>Connect</h3>
+                    <p>Get matched with qualified mental health professionals</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">3</div>
+                    <h3>Support</h3>
+                    <p>Receive ongoing care and support for your wellness journey</p>
+                </div>
+            </div>
+            
+            <button class="consult-now" id="consultNowButton">Consult Now</button>
+        </div>
+    </section>
+
+    <!-- ===== Who's Covered ===== -->
+    <section class="whos-covered" id="about">
+        <div class="container">
+            <h2 class="section-title">Who's Covered For</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Students</h3>
+                        <p>Comprehensive mental health support for academic stress, anxiety, and personal growth</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Working Professionals</h3>
+                        <p>Work-life balance support and stress management for career professionals</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Families</h3>
+                        <p>Family therapy and counseling services for all family members</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Seniors</h3>
+                        <p>Specialized care for older adults focusing on mental wellness and companionship</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Shop Section ===== -->
+    <section class="shop-section">
+        <div class="container">
+            <h2 class="section-title">Shop for Medicines & Wellness</h2>
+            <div class="shop-grid">
+                <div class="shop-item">
+                    <img src="https://images.unsplash.com/photo-1584017911766-d451b3d0e843?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Vitamins">
+                    <div class="shop-item-content">
+                        <h3>Vitamins</h3>
+                        <p>Essential vitamins for daily health</p>
+                    </div>
+                </div>
+                <div class="shop-item">
+                    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Supplements">
+                    <div class="shop-item-content">
+                        <h3>Supplements</h3>
+                        <p>Nutritional supplements for wellness</p>
+                    </div>
+                </div>
+                 <div class="shop-item">
+                    <img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="First Aid">
+                    <div class="shop-item-content">
+                        <h3>First Aid</h3>
+                        <p>Emergency medical supplies</p>
+                    </div>
+                </div>
+                <div class="shop-item">
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Wellness">
+                    <div class="shop-item-content">
+                        <h3>Wellness</h3>
+                        <p>Holistic wellness products</p>
+                    </div>
+                </div>
+                <div class="shop-item">
+                    <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Medical Devices">
+                    <div class="shop-item-content">
+                        <h3>Medical Devices</h3>
+                        <p>Home healthcare monitoring devices</p>
+                    </div>
+                </div>
+              
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Wellness Programs ===== -->
+    <section class="wellness-programs" id="wellness-programs">
+        <div class="container">
+            <h2 class="section-title">Wellness Programs</h2>
+            <div class="programs-grid">
+                <div class="program-card">
+                    <div class="program-icon">🧠</div>
+                    <h3>Mental Health Program</h3>
+                    <p>Comprehensive mental health support with licensed professionals</p>
+                    <div class="program-stats">
+                        <div class="stat">
+                            <div class="stat-number">24/7</div>
+                            <div class="stat-label">Available</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">100+</div>
+                            <div class="stat-label">Therapists</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">50k+</div>
+                            <div class="stat-label">Patients</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="program-card">
+                    <div class="program-icon">💊</div>
+                    <h3>Medication Management</h3>
+                    <p>Professional medication consultation and management services</p>
+                    <div class="program-stats">
+                        <div class="stat">
+                            <div class="stat-number">15min</div>
+                            <div class="stat-label">Delivery</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Medicines</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">24/7</div>
+                            <div class="stat-label">Support</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="program-card">
+                    <div class="program-icon">🏥</div>
+                    <h3>Emergency Care</h3>
+                    <p>Immediate medical attention and emergency healthcare services</p>
+                    <div class="program-stats">
+                        <div class="stat">
+                            <div class="stat-number">5min</div>
+                            <div class="stat-label">Response</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">24/7</div>
+                            <div class="stat-label">Available</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Coverage</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Patient Feedback ===== -->
+    
+
+    <!-- ===== Team Stats ===== -->
+    <section class="team-section" id="contact">
+        <div class="container">
+            <h2 class="section-title">Team Stats</h2>
+            <div class="team-stats">
+                <div class="team-stat">
+                    <div class="team-stat-number">500+</div>
+                    <div class="team-stat-label">Healthcare Professionals</div>
+                </div>
+                <div class="team-stat">
+                    <div class="team-stat-number">100k+</div>
+                    <div class="team-stat-label">Patients Served</div>
+                </div>
+                <div class="team-stat">
+                    <div class="team-stat-number">24/7</div>
+                    <div class="team-stat-label">Support Available</div>
+                </div>
+                <div class="team-stat">
+                    <div class="team-stat-number">98%</div>
+                    <div class="team-stat-label">Patient Satisfaction</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <button class="chat-launcher" id="chatLauncher" aria-label="Open AI wellness chat">💬</button>
+
+    <section class="chat-panel" id="chatPanel" aria-live="polite">
+        <div class="chat-header">
+            <span>AI Wellness Chat</span>
+            <button type="button" id="chatClose" aria-label="Close chat">×</button>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <form class="chat-input-row" id="chatForm">
+            <input type="text" id="chatInput" placeholder="Share what is on your mind..." autocomplete="off" />
+            <button type="submit" class="chat-send">Send</button>
+        </form>
+    </section>
+
+    <audio id="ambientAudio" loop preload="none" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"></audio>
+
+    <script>
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.search-tab');
+            const screeningAppBase = '/index%20(1).html';
+            const musicToggleBtn = document.getElementById('musicToggleBtn');
+            const ambientAudio = document.getElementById('ambientAudio');
+            const MUSIC_KEY = 'wellness_music_enabled';
+            const THEME_DARK_KEY = 'wellness_theme_dark';
+            const AUTH_SESSION_KEY = 'wellness_auth_session';
+            const AUTH_USER_KEY = 'wellness_auth_user';
+            let musicEnabled = localStorage.getItem(MUSIC_KEY) === 'true';
+            let darkMode = localStorage.getItem(THEME_DARK_KEY) === 'true';
+
+            const userTabBtn = document.getElementById('userTabBtn');
+            const userDropdown = document.getElementById('userDropdown');
+            const userTabName = document.getElementById('userTabName');
+            const userTabAvatar = document.getElementById('userTabAvatar');
+            const userDropdownName = document.getElementById('userDropdownName');
+            const userDropdownEmail = document.getElementById('userDropdownEmail');
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+            const profileSettingsBtn = document.getElementById('profileSettingsBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            function getUserInfo() {
+                try {
+                    return JSON.parse(localStorage.getItem(AUTH_USER_KEY) || '{"name":"User","email":""}');
+                } catch {
+                    return { name: 'User', email: '' };
+                }
+            }
+
+            function applyThemeState() {
+                document.body.classList.toggle('dark-theme', darkMode);
+                themeToggleBtn.textContent = darkMode ? 'Disable Dark Mode' : 'Enable Dark Mode';
+            }
+
+            const currentUser = getUserInfo();
+            const userLabel = (currentUser.name || currentUser.email || 'User').trim();
+            userTabName.textContent = userLabel;
+            userDropdownName.textContent = userLabel;
+            userDropdownEmail.textContent = currentUser.email || 'No email';
+            userTabAvatar.textContent = (userLabel[0] || 'U').toUpperCase();
+
+            applyThemeState();
+
+            function applyMusicState() {
+                if (!ambientAudio) return;
+
+                ambientAudio.volume = 0.14;
+                ambientAudio.muted = !musicEnabled;
+                musicToggleBtn.textContent = musicEnabled ? 'Mute Music' : 'Play Music';
+
+                if (musicEnabled) {
+                    const playPromise = ambientAudio.play();
+                    if (playPromise && typeof playPromise.catch === 'function') {
+                        playPromise.catch(() => {
+                            // Browser may block autoplay before user interaction.
+                        });
+                    }
+                } else {
+                    ambientAudio.pause();
+                }
+            }
+
+            musicToggleBtn?.addEventListener('click', function() {
+                musicEnabled = !musicEnabled;
+                localStorage.setItem(MUSIC_KEY, String(musicEnabled));
+                applyMusicState();
+            });
+
+            userTabBtn?.addEventListener('click', function() {
+                userDropdown.classList.toggle('show');
+            });
+
+            themeToggleBtn?.addEventListener('click', function() {
+                darkMode = !darkMode;
+                localStorage.setItem(THEME_DARK_KEY, String(darkMode));
+                applyThemeState();
+            });
+
+            profileSettingsBtn?.addEventListener('click', function() {
+                userDropdown.classList.remove('show');
+                openReactTool('AUTH');
+            });
+
+            logoutBtn?.addEventListener('click', function() {
+                localStorage.removeItem(AUTH_SESSION_KEY);
+                localStorage.removeItem(AUTH_USER_KEY);
+                localStorage.removeItem(MUSIC_KEY);
+                userDropdown.classList.remove('show');
+                window.location.href = '/index%20(1).html?tool=AUTH&redirect=%2F';
+            });
+
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.nav-actions')) {
+                    userDropdown.classList.remove('show');
+                }
+            });
+
+            applyMusicState();
+
+            function openReactTool(tool, reason) {
+                const url = new URL(screeningAppBase, window.location.origin);
+                url.searchParams.set('tool', tool);
+                if (reason) url.searchParams.set('reason', reason);
+                window.location.href = `${url.pathname}?${url.searchParams.toString()}`;
+            }
+
+            function handleAction(action) {
+                if (action === 'screening') {
+                    openReactTool('PHQ9');
+                    return;
+                }
+
+                if (action === 'auth') {
+                    openReactTool('AUTH');
+                    return;
+                }
+
+                if (action === 'mood_game') {
+                    openReactTool('MOOD_GAME');
+                    return;
+                }
+
+                if (action === 'consult') {
+                    openReactTool('CONSULT');
+                    return;
+                }
+
+                if (action === 'activities') {
+                    openReactTool('ACTIVITY');
+                    return;
+                }
+
+                if (action === 'progress') {
+                    openReactTool('PROGRESS');
+                }
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    handleAction(this.dataset.action);
+                });
+            });
+
+            document.getElementById('consultOnlineBtn')?.addEventListener('click', function() {
+                openReactTool('CONSULT');
+            });
+
+            document.getElementById('authBtn')?.addEventListener('click', function() {
+                openReactTool('AUTH');
+            });
+
+            document.getElementById('consultNowButton')?.addEventListener('click', function() {
+                openReactTool('CONSULT');
+            });
+
+            const CHAT_ENDPOINT = 'http://127.0.0.1:8000/chat';
+            const chatLauncher = document.getElementById('chatLauncher');
+            const chatPanel = document.getElementById('chatPanel');
+            const chatClose = document.getElementById('chatClose');
+            const chatMessages = document.getElementById('chatMessages');
+            const chatForm = document.getElementById('chatForm');
+            const chatInput = document.getElementById('chatInput');
+
+            function addChatMessage(role, text) {
+                const bubble = document.createElement('div');
+                bubble.className = `chat-msg ${role}`;
+                bubble.textContent = text;
+                chatMessages.appendChild(bubble);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                return bubble;
+            }
+
+            addChatMessage('bot', 'Hi, I am your AI wellness assistant. How are you feeling today?');
+
+            chatLauncher?.addEventListener('click', function() {
+                chatPanel.classList.toggle('show');
+            });
+
+            chatClose?.addEventListener('click', function() {
+                chatPanel.classList.remove('show');
+            });
+
+            chatForm?.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const userText = (chatInput?.value || '').trim();
+                if (!userText) return;
+
+                addChatMessage('user', userText);
+                chatInput.value = '';
+                const typingBubble = addChatMessage('bot', 'Thinking...');
+
+                try {
+                    const response = await fetch(CHAT_ENDPOINT, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: userText })
+                    });
+
+                    if (!response.ok) throw new Error('Chat server unavailable');
+                    const payload = await response.json();
+                    typingBubble.textContent = payload.reply || 'I could not generate a response right now.';
+                } catch (error) {
+                    typingBubble.textContent = 'I cannot reach your mental AI service right now. Start it with: python3 mental/chat_server.py';
+                }
+            });
+        });
+
+       
+    </script>
+</body>
+</html>
