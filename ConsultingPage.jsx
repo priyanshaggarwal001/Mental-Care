@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./WellnessShared.css";
 import "./ConsultingPage.css";
 import { recordConsultBooking } from "./wellnessStats";
+import { notifyBookingComplete, requestNotificationPermission } from "./notificationService";
 
 function parseCounselorsCsv(csvText) {
   const lines = csvText.split(/\r?\n/).filter(Boolean);
@@ -59,13 +60,21 @@ export default function ConsultingPage() {
       const txId = params.get("transactionId") || "";
       recordConsultBooking(txId);
 
-      setPaymentSuccess({
+      const bookingData = {
         counselorName: params.get("counselor") || "Selected counselor",
         amount: Number(params.get("amount") || 0),
-        method: params.get("method") || "Gateway",
         bookingId: params.get("bookingId") || "N/A",
         transactionId: params.get("transactionId") || "N/A",
+      };
+
+      setPaymentSuccess({
+        ...bookingData,
+        method: params.get("method") || "Gateway",
       });
+
+      // Trigger notifications
+      notifyBookingComplete(bookingData);
+      requestNotificationPermission();
     }
   }, []);
 

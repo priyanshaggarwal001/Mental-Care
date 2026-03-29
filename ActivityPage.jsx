@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import "./WellnessShared.css";
 import "./ActivityPage.css";
 import { recordActivitySession } from "./wellnessStats";
+import { notifyActivityComplete } from "./notificationService";
 
 const ACTIVITIES = [
   {
@@ -73,6 +74,7 @@ export default function ActivityPage() {
           setRunning(false);
           setCompletedCount((count) => count + 1);
           recordActivitySession(selectedActivity.minutes);
+          notifyActivityComplete(selectedActivity.name);
           return 0;
         }
         return prev - 1;
@@ -80,7 +82,7 @@ export default function ActivityPage() {
     }, 1000);
 
     return () => window.clearInterval(timer);
-  }, [running, selectedActivity.minutes]);
+  }, [running, selectedActivity]);
 
   function pickActivity(activity) {
     setRunning(false);
@@ -97,6 +99,7 @@ export default function ActivityPage() {
     setRunning(false);
     setSecondsLeft(0);
     setCompletedCount((count) => count + 1);
+    notifyActivityComplete(selectedActivity.name);
     recordActivitySession(selectedActivity.minutes);
   }
 
